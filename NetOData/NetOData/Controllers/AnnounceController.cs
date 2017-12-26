@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.OData;
@@ -11,10 +12,10 @@ namespace NetOData.Controllers
     {
         MySampleDb context = new MySampleDb();
 
-        [EnableQuery(PageSize = 10, MaxExpansionDepth = 2, AllowedFunctions = AllowedFunctions.All)]
-        public IHttpActionResult Get()
+        [EnableQuery]
+        public IHttpActionResult Get(string name = "")
         {
-            return Ok(context.Announces);
+            return Ok(context.Announces.Where(a => a.Name.Contains(name)));
         }
 
         public async Task<IHttpActionResult> Post([FromBody] Announce entity)
